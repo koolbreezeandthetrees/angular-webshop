@@ -1,6 +1,6 @@
 //navbar.component.ts
 import { Component } from '@angular/core';
-import {AuthService} from "../services/auth.service";
+import {AuthService} from "../services/user-access/auth.service";
 import {AppUser} from "../models/app-user";
 
 
@@ -16,7 +16,7 @@ export class NavbarComponent {
 
   // Inject: auth service to get access to the appUser$ observable
   constructor(private auth: AuthService) {
-    auth.appUser$.subscribe(appUser => this.appUser = appUser);
+    auth.appUser$.subscribe(appUser => this.appUser = appUser); // here we are subscribing to the appUser$ observable from auth service
   }
 
   logout() {

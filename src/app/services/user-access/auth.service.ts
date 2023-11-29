@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import { GoogleAuthProvider, User} from "firebase/auth";
 import {Observable, of} from "rxjs";
-import {AppUser} from "../models/app-user";
+import {AppUser} from "../../models/app-user";
 import {switchMap} from "rxjs/operators";
 import {UserService} from "./user.service";
 
@@ -42,12 +42,8 @@ export class AuthService {
   get appUser$(): Observable<AppUser | null> {
     return this.user$.pipe(
       switchMap(user => {
-        if (user) {
-          return this.userService.get(user.uid);
-        } else {
-          // Handle the case when user is null
-          return of(null);
-        }
+        if (user) {return this.userService.get(user.uid);}
+        return of(null);
       })
     );
 

@@ -2,6 +2,11 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from "@angular/forms";
+
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 import { AppComponent } from './app.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
@@ -14,16 +19,15 @@ import { CheckOutComponent } from './check-out/check-out.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.component';
 import { AdminProductComponent } from './admin/admin-product/admin-product.component';
-
-import {AuthService} from "./services/auth.service";
-import {AuthGuard} from "./services/auth-guard.service";
-import {UserService} from "./services/user.service";
-import {AdminAuthGuard} from "./services/admin-auth-guard.service";
+import { ProductFormComponent } from './admin/product-form/product-form.component';
 
 
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import {AuthService} from "./services/user-access/auth.service";
+import {AuthGuard} from "./services/user-access/auth-guard.service";
+import {UserService} from "./services/user-access/user.service";
+import {AdminAuthGuard} from "./services/user-access/admin-auth-guard.service";
+import {CategoryService} from "./services/products/category.service";
+import {ProductService} from "./services/products/product.service";
 
 
 
@@ -51,7 +55,8 @@ const firebaseConfig = {
     CheckOutComponent,
     NavbarComponent,
     AdminOrdersComponent,
-    AdminProductComponent
+    AdminProductComponent,
+    ProductFormComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -75,15 +80,19 @@ const firebaseConfig = {
       //routes for admin users
       {path: 'admin/products', component: AdminProductComponent, canActivate: [AuthGuard, AdminAuthGuard]},
       {path: 'admin/orders', component: AdminOrdersComponent, canActivate: [AuthGuard, AdminAuthGuard]},
+      {path: 'admin/products/new', component: ProductFormComponent, canActivate: [AuthGuard, AdminAuthGuard]},
 
     ]),
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [
     AuthService,
     AuthGuard,
     AdminAuthGuard,
-    UserService
+    UserService,
+    CategoryService,
+    ProductService
   ],
   bootstrap: [AppComponent]
 })
