@@ -34,16 +34,19 @@ export class LoginComponent {
   private handleLoginSuccess() {
     // Check if there's a returnUrl in local storage
     const returnUrl = localStorage.getItem('returnUrl');
+    console.log('beginning of handleLoginSuccess')
+    console.log(returnUrl)
 
     if (returnUrl) {
-      // Clear returnUrl after using it
-      localStorage.removeItem('returnUrl');
       // Navigate to returnUrl
       this.router.navigateByUrl(returnUrl).then(r => console.log(r));
+      // Clear returnUrl after using it
+      localStorage.removeItem('returnUrl');
+      console.log('navigate to return url')
     } else {
       // If no returnUrl, navigate to a default page
       this.router.navigate(['/']).then(r => console.log(r));
+      console.log('navigate to home, because there is no return url')
     }
   }
 }
-

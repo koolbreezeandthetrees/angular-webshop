@@ -32,8 +32,9 @@ export class AuthService {
   // signInWithRedirect() method that takes a provider as an argument. We use the GoogleAuthProvider to create a new provider.
   // Once the user is logged in, it is saved in Firebase database , this is done in app.component.ts. Here the AuthService is injected and makes use of the user$ variable.
   login() {
-    this.afAuth.signInWithRedirect(new GoogleAuthProvider()).then(r => console.log(r));
+    this.afAuth.signInWithRedirect(new GoogleAuthProvider());
   }
+
 
   logout() {
     this.afAuth.signOut().then(r => console.log(r));
