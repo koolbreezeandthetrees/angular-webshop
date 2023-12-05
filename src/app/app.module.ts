@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { DataTablesModule} from "angular-datatables";
 
 
 import { AngularFireModule } from '@angular/fire/compat';
@@ -29,6 +30,12 @@ import {UserService} from "./services/user-access/user.service";
 import {AdminAuthGuard} from "./services/user-access/admin-auth-guard.service";
 import {CategoryService} from "./services/products/category.service";
 import {ProductService} from "./services/products/product.service";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MaterialModule} from "./material/material.module";
+import {MatSortModule} from "@angular/material/sort";
+import { ProductFilterComponent } from './products/product-filter/product-filter.component';
+import { ProductCardComponent } from './product-card/product-card.component';
 
 
 
@@ -48,7 +55,7 @@ const firebaseConfig = {
   declarations: [
     AppComponent,
     ShoppingCartComponent,
-    ProductsComponent,
+   ProductsComponent,
     OrderSuccessComponent,
     MyOrdersComponent,
     LoginComponent,
@@ -57,7 +64,9 @@ const firebaseConfig = {
     NavbarComponent,
     AdminOrdersComponent,
     AdminProductComponent,
-    ProductFormComponent
+    ProductFormComponent,
+    ProductFilterComponent,
+    ProductCardComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -87,6 +96,10 @@ const firebaseConfig = {
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    DataTablesModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    MatSortModule
   ],
   providers: [
     AuthService,

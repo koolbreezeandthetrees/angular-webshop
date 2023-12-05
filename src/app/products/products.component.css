@@ -1,0 +1,7 @@
+
+
+.square-image {
+  object-fit: cover; /* This will make the image cover the entire container */
+  height: 100%; /* Set the height to 100% to fill the entire card height */
+  width: 100%; /* Ensure the image takes up the entire width of the container */
+}

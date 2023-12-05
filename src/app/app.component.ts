@@ -14,6 +14,7 @@ export class AppComponent {
   // in the constructor we are subscribing to the user$ observable from auth service because we want to save the user to the database when the user logs in, we do in app.component.ts because we want to do it only once when the app starts.
 
   // Inject: userService to save the user to the database , auth service to get access to the user$ observable, router service to navigate to the returnUrl
+    title: string = 'webshop';
 
   constructor(private userService: UserService, private auth: AuthService, private router: Router) {
     auth.user$.subscribe(user => { // here we are subscribing to the user$ observable from auth service

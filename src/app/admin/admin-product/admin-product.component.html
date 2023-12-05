@@ -1,4 +1,3 @@
-<!-- admin-product.component.html -->
 <p>
   <a routerLink="/admin/products/new" class="btn btn-primary">New Product</a>
 </p>
@@ -6,27 +5,57 @@
 <p>
   <input
     #query
-    (keyup)="filter(query.value)"
+    (keyup)="applyFilter(query.value)"
     type="text"
     class="form-control"
-    placeholder="Search...">
+    placeholder="Search..."
+  />
 </p>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Title</th>
-    <th>Price</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let product of filteredProducts">
-    <td>{{ product.title }}</td>
-    <td>{{ product.price }}</td>
-    <td>
+<table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 custom-table">
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+    <td mat-cell *matCellDef="let product"> {{ product.title }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+    <td mat-cell *matCellDef="let product"> {{ product.price | currency:'USD':'symbol'}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="edit">
+    <th mat-header-cell *matHeaderCellDef> Edit </th>
+    <td mat-cell *matCellDef="let product">
       <a [routerLink]="['/admin/products/', product.$key]">Edit</a>
     </td>
-  </tr>
-  </tbody>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
 </table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+
+
+
+<!--&lt;!&ndash;this is my old code&ndash;&gt;-->
+<!--<table class="table">-->
+<!--  <thead>-->
+<!--  <tr>-->
+<!--    <th>Title</th>-->
+<!--    <th>Price</th>-->
+<!--    <th></th>-->
+<!--  </tr>-->
+<!--  </thead>-->
+<!--  <tbody>-->
+<!--  <tr *ngFor="let product of filteredProducts">-->
+<!--    <td>{{ product.title }}</td>-->
+<!--    <td>{{ product.price }}</td>-->
+<!--    <td>-->
+<!--      <a [routerLink]="['/admin/products/', product.$key]">Edit</a>-->
+<!--    </td>-->
+<!--  </tr>-->
+<!--  </tbody>-->
+<!--</table>-->
