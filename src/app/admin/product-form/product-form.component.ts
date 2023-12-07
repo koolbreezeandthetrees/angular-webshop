@@ -9,10 +9,6 @@ import { MyValidators } from "../../common/validators/product.validators";
 import { ActivatedRoute, Router } from "@angular/router";
 import {Category} from "../../models/category";
 
-interface PriceErrors {
-  required?: string;
-  invalidPrice?: string;
-}
 
 @Component({
   selector: 'app-product-form',
@@ -27,11 +23,11 @@ export class ProductFormComponent implements OnInit {
   id: string | null;
 
   constructor(
-    private fb: FormBuilder,
-    private categoryService: CategoryService,
-    private productService: ProductService,
-    private router: Router,
-    private route: ActivatedRoute
+      private fb: FormBuilder,
+      private categoryService: CategoryService,
+      private productService: ProductService,
+      private router: Router,
+      private route: ActivatedRoute
   ) {
     this.id = this.route.snapshot.paramMap.get('id');
   }
@@ -61,14 +57,6 @@ export class ProductFormComponent implements OnInit {
     this.form.valueChanges.subscribe((value) => {
       this.product = value;
     });
-  }
-
-
-  private updateFormControls() {
-    this.titleControl?.setValue(this.product.title);
-    this.priceControl?.setValue(this.product.price);
-    this.categoryControl?.setValue(this.product.category);
-    this.imageUrlControl?.setValue(this.product.imageUrl);
   }
 
   save() {
@@ -116,5 +104,3 @@ export class ProductFormComponent implements OnInit {
     }
   }
 }
-
-

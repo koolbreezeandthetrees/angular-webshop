@@ -14,9 +14,10 @@ export class NavbarComponent {
   // variable to store the user
   appUser: AppUser | null | undefined;
 
-  // Inject: auth service to get access to the appUser$ observable
+  // Inject: auth service to get access to the appUser$ observable, and shoppingCartService to get access to the cart$ observable
   constructor(private auth: AuthService) {
     auth.appUser$.subscribe(appUser => this.appUser = appUser); // here we are subscribing to the appUser$ observable from auth service
+
   }
 
   logout() {

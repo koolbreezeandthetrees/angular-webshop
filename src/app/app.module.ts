@@ -36,6 +36,7 @@ import {MaterialModule} from "./material/material.module";
 import {MatSortModule} from "@angular/material/sort";
 import { ProductFilterComponent } from './products/product-filter/product-filter.component';
 import { ProductCardComponent } from './product-card/product-card.component';
+import {ShoppingCartService} from "./services/shopping/shopping-cart.service";
 
 
 
@@ -66,7 +67,7 @@ const firebaseConfig = {
     AdminProductComponent,
     ProductFormComponent,
     ProductFilterComponent,
-    ProductCardComponent
+      ProductCardComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -107,7 +108,8 @@ const firebaseConfig = {
     AdminAuthGuard,
     UserService,
     CategoryService,
-    ProductService
+    ProductService,
+    ShoppingCartService
   ],
   bootstrap: [AppComponent]
 })
