@@ -1,9 +1,10 @@
 // shopping-cart.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import {filter, Observable, take} from 'rxjs';
-import { map } from 'rxjs/operators';
+import {filter, forkJoin, Observable, take} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
 import {ShoppingCart} from "../../models/shopping-cart";
+import {ProductService} from "../products/product.service";
 
 @Injectable({
     providedIn: 'root',
@@ -11,7 +12,7 @@ import {ShoppingCart} from "../../models/shopping-cart";
 export class ShoppingCartService {
     private readonly cartIdKey = 'cartId';
 
-    constructor(private db: AngularFireDatabase) {}
+    constructor(private db: AngularFireDatabase, private productService: ProductService) {}
 
     // shopping-cart.service.ts
     getCart(): Observable<ShoppingCart> {
@@ -45,16 +46,25 @@ export class ShoppingCartService {
 
         cartItemRef.valueChanges().pipe(
             take(1),
-            map((cartItem: any) => {
+            switchMap((cartItem: any) => {
                 const quantity = (cartItem?.quantity || 0) + change;
-                if (quantity > 0) {
-                    return cartItemRef.update({ product: productId, quantity });
-                } else {
-                    return cartItemRef.remove();
-                }
+
+                // Fetch the product title
+                return this.productService.getProductTitle(productId).pipe(
+                    take(1),
+                    switchMap(title => {
+                        // Update or remove the cart item
+                        if (quantity > 0) {
+                            return cartItemRef.update({ product: productId, quantity, title });
+                        } else {
+                            return cartItemRef.remove();
+                        }
+                    })
+                );
             })
         ).subscribe(() => {}, () => {});
     }
+
 
     getCartItems(): Observable<any[]> {
         const cartId = this.getOrCreateCartId();
@@ -75,4 +85,6 @@ export class ShoppingCartService {
 
         return cartId;
     }
+
+
 }

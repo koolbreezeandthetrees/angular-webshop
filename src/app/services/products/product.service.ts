@@ -39,4 +39,15 @@ export class ProductService {
   delete(productId: string) {
     return this.db.object('/products/' + productId).remove();
   }
+
+  getProductTitle(productId: string): Observable<string> {
+    console.log('Fetching product title for productId:', productId);
+    return this.getProduct(productId)
+        .pipe(
+            map((product: any) => {
+              console.log('Product details:', product);
+              return product ? product.title : '';
+            })
+        );
+  }
 }
