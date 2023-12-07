@@ -1,3 +1,4 @@
+<!-- navbar.component.html -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
   <div class="container">
@@ -20,9 +21,10 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link"
-             routerLink="/shopping-cart">
-            Shopping Cart</a>
+          <a class="nav-link" routerLink="/shopping-cart">
+            Shopping Cart
+            <span class="badge badge-pill bg-warning" *ngIf="cart$ | async as cart">{{ cart.totalItemsCount }}</span>
+          </a>
         </li>
 
         <ng-template #anonymousUser>

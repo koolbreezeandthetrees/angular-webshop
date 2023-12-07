@@ -1,32 +1,32 @@
 //navbar.component.ts
-import { Component } from '@angular/core';
-import {AuthService} from "../services/user-access/auth.service";
-import {AppUser} from "../models/app-user";
-
-
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/user-access/auth.service';
+import { AppUser } from '../models/app-user';
+import { ShoppingCartService } from '../services/shopping/shopping-cart.service';
+import { Observable } from 'rxjs';
+import { ShoppingCart } from '../models/shopping-cart';
 
 @Component({
   selector: 'navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent {
-  // variable to store the user
+export class NavbarComponent implements OnInit {
   appUser: AppUser | null | undefined;
+  cart$: Observable<ShoppingCart> | undefined;
 
-  // Inject: auth service to get access to the appUser$ observable, and shoppingCartService to get access to the cart$ observable
-  constructor(private auth: AuthService) {
-    auth.appUser$.subscribe(appUser => this.appUser = appUser); // here we are subscribing to the appUser$ observable from auth service
+  constructor(private auth: AuthService, private shoppingCartService: ShoppingCartService) {}
 
+  ngOnInit() {
+    this.auth.appUser$.subscribe(appUser => this.appUser = appUser);
+    this.cart$ = this.shoppingCartService.getCart();
   }
 
   logout() {
     this.auth.logout();
   }
 
-  get getAuth(){
+  get getAuth() {
     return this.auth;
   }
-
-
 }

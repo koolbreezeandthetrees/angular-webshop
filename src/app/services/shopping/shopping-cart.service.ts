@@ -1,16 +1,30 @@
 // shopping-cart.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable, take } from 'rxjs';
+import {filter, Observable, take} from 'rxjs';
 import { map } from 'rxjs/operators';
+import {ShoppingCart} from "../../models/shopping-cart";
 
 @Injectable({
     providedIn: 'root',
 })
 export class ShoppingCartService {
-    private readonly CART_ID_KEY = 'cartId';
+    private readonly cartIdKey = 'cartId';
 
     constructor(private db: AngularFireDatabase) {}
+
+    // shopping-cart.service.ts
+    getCart(): Observable<ShoppingCart> {
+        const cartId = this.getOrCreateCartId();
+
+        return this.db
+            .object<{ items?: { [productId: string]: any } }>(`/shopping-carts/${cartId}`)
+            .valueChanges()
+            .pipe(
+                filter(cart => cart !== null),
+                map(cart => new ShoppingCart(cart?.items || {}))
+            );
+    }
 
     addToCart(productId: string | undefined): void {
         this.updateCartItem(productId, 1);
@@ -52,11 +66,11 @@ export class ShoppingCartService {
     }
 
     getOrCreateCartId(): string {
-        let cartId = localStorage.getItem(this.CART_ID_KEY);
+        let cartId = localStorage.getItem(this.cartIdKey);
 
         if (!cartId) {
             cartId = this.generateCartId();
-            localStorage.setItem(this.CART_ID_KEY, cartId);
+            localStorage.setItem(this.cartIdKey, cartId);
         }
 
         return cartId;
