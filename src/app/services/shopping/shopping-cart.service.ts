@@ -44,25 +44,38 @@ export class ShoppingCartService {
         const cartId = this.getOrCreateCartId();
         const cartItemRef = this.db.object(`/shopping-carts/${cartId}/items/${productId}`);
 
-        cartItemRef.valueChanges().pipe(
-            take(1),
-            switchMap((cartItem: any) => {
-                const quantity = (cartItem?.quantity || 0) + change;
+        cartItemRef.valueChanges()
+            .pipe(
+                take(1),
+                switchMap((cartItem: any) => {
+                    const quantity = (cartItem?.quantity || 0) + change;
 
-                // Fetch the product title
-                return this.productService.getProductTitle(productId).pipe(
-                    take(1),
-                    switchMap(title => {
-                        // Update or remove the cart item
-                        if (quantity > 0) {
-                            return cartItemRef.update({ product: productId, quantity, title });
-                        } else {
-                            return cartItemRef.remove();
-                        }
-                    })
-                );
-            })
-        ).subscribe(() => {}, () => {});
+                    // Fetch the product details, including the price
+                    return this.productService.getProduct(productId).pipe(
+                        take(1),
+                        switchMap((product: any) => {
+                            const price = product ? product.price : 0;
+                            const title = product ? product.title : '';
+
+                            // Create an object with the product details including the reference to the product node
+                            const updatedCartItem = {
+                                product: { id: productId, ...product }, // Store the reference to the product node
+                                quantity,
+                                title,
+                                price
+                            };
+
+                            // Update or remove the cart item
+                            if (quantity > 0) {
+                                return cartItemRef.update(updatedCartItem);
+                            } else {
+                                return cartItemRef.remove();
+                            }
+                        })
+                    );
+                })
+            )
+            .subscribe(() => {}, () => {});
     }
 
 

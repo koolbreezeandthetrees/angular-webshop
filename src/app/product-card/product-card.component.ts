@@ -18,7 +18,7 @@ export class ProductCardComponent implements OnInit {
     ngOnInit() {
         // Subscribe to changes in the cart items to update cart quantity
         this.cartService.getCartItems().subscribe((cartItems) => {
-            const cartItem = cartItems.find((item) => item.product === this.product?.$key);
+            const cartItem = cartItems.find((item) => item.product.id === this.product?.$key);
             this.cartQuantity = cartItem?.quantity || 0;
         });
     }

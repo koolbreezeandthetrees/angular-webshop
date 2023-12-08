@@ -18,13 +18,13 @@ export class ProductService {
   getAll(): Observable<any[]> {
     // Use snapshotChanges() to get both data and metadata
     return this.db.list('/products').snapshotChanges()
-      .pipe(
-        map(actions => actions.map(action => {
-          const data = action.payload.val();
-          const $key = action.key as string;
-          return { $key, ...(data as object) };
-        }))
-      );
+        .pipe(
+            map(actions => actions.map(action => {
+              const data = action.payload.val();
+              const $key = action.key as string;
+              return { $key, ...(data as object) };
+            }))
+        );
   }
 
   getProduct(productId: string): Observable<unknown | null> {
@@ -40,14 +40,4 @@ export class ProductService {
     return this.db.object('/products/' + productId).remove();
   }
 
-  getProductTitle(productId: string): Observable<string> {
-    console.log('Fetching product title for productId:', productId);
-    return this.getProduct(productId)
-        .pipe(
-            map((product: any) => {
-              console.log('Product details:', product);
-              return product ? product.title : '';
-            })
-        );
-  }
 }
