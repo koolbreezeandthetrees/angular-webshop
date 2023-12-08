@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Product } from '../models/product';
 import { ProductService } from '../services/products/product.service';
-
+import { ShoppingCart } from '../models/shopping-cart';
+import {ShoppingCartService} from "../services/shopping/shopping-cart.service"; // Import the ShoppingCart model
 
 @Component({
     selector: 'app-products',
@@ -15,13 +16,20 @@ export class ProductsComponent implements OnInit {
     products: Product[] = [];
     filteredProducts: Product[] = [];
     category: string | null = null;
+    shoppingCart: ShoppingCart | undefined; // Add the shoppingCart property
 
     constructor(
         private productService: ProductService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private shoppingCartService: ShoppingCartService // Import and inject the ShoppingCartService
     ) {}
 
     ngOnInit() {
+        // Initialize the shoppingCart property
+        this.shoppingCartService.getCart().subscribe(cart => {
+            this.shoppingCart = cart;
+        });
+
         this.route.queryParamMap
             .pipe(
                 switchMap((params) => {

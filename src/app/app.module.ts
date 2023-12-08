@@ -37,6 +37,7 @@ import {MatSortModule} from "@angular/material/sort";
 import { ProductFilterComponent } from './products/product-filter/product-filter.component';
 import { ProductCardComponent } from './product-card/product-card.component';
 import {ShoppingCartService} from "./services/shopping/shopping-cart.service";
+import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
 
 
 
@@ -67,7 +68,8 @@ const firebaseConfig = {
     AdminProductComponent,
     ProductFormComponent,
     ProductFilterComponent,
-      ProductCardComponent
+      ProductCardComponent,
+      ProductQuantityComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),

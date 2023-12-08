@@ -26,15 +26,12 @@ export class ShoppingCartService {
                 map(cart => new ShoppingCart(cart?.items || {}))
             );
     }
-
     addToCart(productId: string | undefined): void {
         this.updateCartItem(productId, 1);
     }
-
     removeFromCart(productId: string | undefined): void {
         this.updateCartItem(productId, -1);
     }
-
     private updateCartItem(productId: string | undefined, change: number): void {
         if (!productId) {
             console.error('Product ID is undefined');
@@ -77,17 +74,13 @@ export class ShoppingCartService {
             )
             .subscribe(() => {}, () => {});
     }
-
-
     getCartItems(): Observable<any[]> {
         const cartId = this.getOrCreateCartId();
         return this.db.list(`/shopping-carts/${cartId}/items`).valueChanges();
     }
-
     private generateCartId(): string {
         return 'cart_' + Math.random().toString(36).substr(2, 9);
     }
-
     getOrCreateCartId(): string {
         let cartId = localStorage.getItem(this.cartIdKey);
 
@@ -98,6 +91,5 @@ export class ShoppingCartService {
 
         return cartId;
     }
-
 
 }
