@@ -38,6 +38,9 @@ import { ProductFilterComponent } from './products/product-filter/product-filter
 import { ProductCardComponent } from './product-card/product-card.component';
 import {ShoppingCartService} from "./services/shopping/shopping-cart.service";
 import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
+import {OrderService} from "./services/checkout/order.service";
+import { ShoppingCartSummaryComponent } from './shopping-cart-summary/shopping-cart-summary.component';
+import { ShippingFormComponent } from './shipping-form/shipping-form.component';
 
 
 
@@ -68,8 +71,10 @@ const firebaseConfig = {
     AdminProductComponent,
     ProductFormComponent,
     ProductFilterComponent,
-      ProductCardComponent,
-      ProductQuantityComponent
+    ProductCardComponent,
+    ProductQuantityComponent,
+    ShoppingCartSummaryComponent,
+    ShippingFormComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -88,7 +93,7 @@ const firebaseConfig = {
       //routes for logged-in users
       {path: 'my/orders', component: MyOrdersComponent, canActivate: [AuthGuard]},
       {path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuard]},
-      {path: 'order-success', component: OrderSuccessComponent, canActivate: [AuthGuard]},
+      {path: 'order-success/:id', component: OrderSuccessComponent, canActivate: [AuthGuard]},
 
       //routes for admin users
       {path: 'admin/products/new', component: ProductFormComponent, canActivate: [AuthGuard, AdminAuthGuard]},
@@ -111,7 +116,8 @@ const firebaseConfig = {
     UserService,
     CategoryService,
     ProductService,
-    ShoppingCartService
+    ShoppingCartService,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })

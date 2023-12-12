@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from '../services/shopping/shopping-cart.service';
 import { Observable } from 'rxjs';
 import { ShoppingCart } from '../models/shopping-cart';
-import { ProductService } from '../services/products/product.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -14,8 +13,7 @@ export class ShoppingCartComponent implements OnInit {
   cart$: Observable<ShoppingCart> | undefined;
 
   constructor(
-    private shoppingCartService: ShoppingCartService,
-    private productService: ProductService
+    private shoppingCartService: ShoppingCartService
   ) {}
 
   ngOnInit() {

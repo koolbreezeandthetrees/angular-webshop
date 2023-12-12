@@ -1,1 +1,33 @@
-<p>my-orders works!</p>
+<!-- my-orders.component.html -->
+<h1>Orders</h1>
+<table class="table table-striped table-bordered">
+  <thead class="thead-dark">
+  <tr>
+    <th>Date Placed</th>
+    <th>Items</th>
+    <th>Shipping Address</th>
+    <!-- Add more columns as needed -->
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let order of orders$ | async">
+    <td>{{ order.payload.val()?.datePlaced | date }}</td>
+    <td>
+      <ul class="list-unstyled"> <!-- Added Bootstrap class to remove bullets -->
+        <li *ngFor="let item of order.payload.val()?.items">
+          {{ item.quantity }} x {{ item.product.title }} - ${{ item.totalPrice }}
+        </li>
+      </ul>
+    </td>
+    <td>
+      <div>
+        {{ order.payload.val()?.shipping?.name }}<br>
+        {{ order.payload.val()?.shipping?.addressLine1 }}<br>
+        {{ order.payload.val()?.shipping?.addressLine2 }}<br>
+        {{ order.payload.val()?.shipping?.city }}
+      </div>
+    </td>
+    <!-- Add more columns as needed -->
+  </tr>
+  </tbody>
+</table>
