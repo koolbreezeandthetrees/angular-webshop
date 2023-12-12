@@ -16,7 +16,7 @@ export class ProductsComponent implements OnInit {
     products: Product[] = [];
     filteredProducts: Product[] = [];
     category: string | null = null;
-    shoppingCart: ShoppingCart | undefined; // Add the shoppingCart property
+    shoppingCart: ShoppingCart | undefined;
 
     constructor(
         private productService: ProductService,

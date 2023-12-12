@@ -16,16 +16,16 @@ export class ProductQuantityComponent {
   constructor(private cartService: ShoppingCartService) {}
 
   addToCart(): void {
-    if (this.product && this.product.$key) {
-      this.cartService.addToCart(this.product.$key);
+    if (this.product && this.product.id) {
+      this.cartService.addToCart(this.product.id);
     } else {
       console.error('Product ID is undefined');
     }
   }
 
   removeFromCart(): void {
-    if (this.product && this.product.$key) {
-      this.cartService.removeFromCart(this.product.$key);
+    if (this.product && this.product.id) {
+      this.cartService.removeFromCart(this.product.id);
     } else {
       console.error('Product ID is undefined');
     }

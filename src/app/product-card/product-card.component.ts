@@ -17,13 +17,12 @@ export class ProductCardComponent {
     constructor(private cartService: ShoppingCartService) {}
 
     addToCart(): void {
-        if (this.product && this.product.$key) {
-            this.cartService.addToCart(this.product.$key);
+        if (this.product && this.product.id) {
+            this.cartService.addToCart(this.product.id);
         } else {
-            console.error('Product ID is undefined');
+          console.error('Product ID is undefined');
         }
     }
-
 
     getQuantity(): number {
         return this.shoppingCart?.getQuantity(<Product>this.product) || 0;

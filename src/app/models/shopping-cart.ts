@@ -13,8 +13,8 @@ export class ShoppingCart {
     }
 
     getQuantity(product: Product ){
-        if (this.itemsMap && product.$key) {
-            let item = this.itemsMap[product.$key];
+        if (this.itemsMap && product.id) {
+            let item = this.itemsMap[product.id];
             return item ? item.quantity : 0;
         }
         return 0;
