@@ -1,7 +1,7 @@
 // shopping-cart.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import {filter, Observable, take} from 'rxjs';
+import {BehaviorSubject, filter, Observable, take} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {ShoppingCart} from "../../models/shopping-cart";
 import {ProductService} from "../products/product.service";
@@ -11,27 +11,47 @@ import {ProductService} from "../products/product.service";
 })
 export class ShoppingCartService {
     private readonly cartIdKey = 'cartId';
+  private cartSubject = new BehaviorSubject<ShoppingCart>(new ShoppingCart({}));
 
     constructor(private db: AngularFireDatabase, private productService: ProductService) {}
 
-    // shopping-cart.service.ts
-    getCart(): Observable<ShoppingCart> {
-        const cartId = this.getOrCreateCartId();
 
-        return this.db
-            .object<{ items?: { [productId: string]: any } }>(`/shopping-carts/${cartId}`)
-            .valueChanges()
-            .pipe(
-                filter(cart => cart !== null),
-                map(cart => new ShoppingCart(cart?.items || {}))
-            );
-    }
+  getCart(): Observable<ShoppingCart> {
+    const cartId = this.getOrCreateCartId();
+
+    this.db
+      .object<{ items?: { [productId: string]: any } }>(`/shopping-carts/${cartId}`)
+      .valueChanges()
+      .pipe(
+        filter((cart) => cart !== null),
+        map((cart) => new ShoppingCart(cart?.items || {}))
+      )
+      .subscribe((cart) => {
+        // Update the BehaviorSubject when the cart changes
+        this.cartSubject.next(cart);
+      });
+
+    return this.cartSubject.asObservable();
+  }
     addToCart(productId: string | undefined): void {
         this.updateCartItem(productId, 1);
     }
     removeFromCart(productId: string | undefined): void {
         this.updateCartItem(productId, -1);
     }
+
+
+  async clearCart(): Promise<void> {
+    let cartId = this.getOrCreateCartId();
+    await this.db.object(`/shopping-carts/${cartId}/items`).remove();
+
+    // Emit an empty cart to subscribers after clearing
+    this.cartSubject.next(new ShoppingCart({}));
+
+    console.log('cart cleared');
+  }
+
+
     private updateCartItem(productId: string | undefined, change: number): void {
         if (!productId) {
             console.error('Product ID is undefined');
