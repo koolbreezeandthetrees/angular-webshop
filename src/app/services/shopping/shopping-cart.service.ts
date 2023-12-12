@@ -1,7 +1,7 @@
 // shopping-cart.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import {filter, forkJoin, Observable, take} from 'rxjs';
+import {filter, Observable, take} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {ShoppingCart} from "../../models/shopping-cart";
 import {ProductService} from "../products/product.service";
@@ -26,15 +26,12 @@ export class ShoppingCartService {
                 map(cart => new ShoppingCart(cart?.items || {}))
             );
     }
-
     addToCart(productId: string | undefined): void {
         this.updateCartItem(productId, 1);
     }
-
     removeFromCart(productId: string | undefined): void {
         this.updateCartItem(productId, -1);
     }
-
     private updateCartItem(productId: string | undefined, change: number): void {
         if (!productId) {
             console.error('Product ID is undefined');
@@ -56,13 +53,15 @@ export class ShoppingCartService {
                         switchMap((product: any) => {
                             const price = product ? product.price : 0;
                             const title = product ? product.title : '';
+                            const id = product ? product.id : '';
 
                             // Create an object with the product details including the reference to the product node
                             const updatedCartItem = {
                                 product: { id: productId, ...product }, // Store the reference to the product node
                                 quantity,
                                 title,
-                                price
+                                price,
+
                             };
 
                             // Update or remove the cart item
@@ -77,17 +76,13 @@ export class ShoppingCartService {
             )
             .subscribe(() => {}, () => {});
     }
-
-
     getCartItems(): Observable<any[]> {
         const cartId = this.getOrCreateCartId();
         return this.db.list(`/shopping-carts/${cartId}/items`).valueChanges();
     }
-
     private generateCartId(): string {
         return 'cart_' + Math.random().toString(36).substr(2, 9);
     }
-
     getOrCreateCartId(): string {
         let cartId = localStorage.getItem(this.cartIdKey);
 
@@ -98,6 +93,5 @@ export class ShoppingCartService {
 
         return cartId;
     }
-
 
 }

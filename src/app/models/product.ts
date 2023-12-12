@@ -1,6 +1,7 @@
 // product.model.ts
 export interface Product {
-  $key?: string;
+  $key: string;
+  id: string;
   title: string;
   price: number;
   category: string;

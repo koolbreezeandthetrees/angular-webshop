@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from "@angular/fire/compat/database";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import {Product} from "../../models/product";
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,16 @@ export class ProductService {
     return this.db.list('/products').push(product);
   }
 
+
+
   getAll(): Observable<any[]> {
     // Use snapshotChanges() to get both data and metadata
     return this.db.list('/products').snapshotChanges()
         .pipe(
             map(actions => actions.map(action => {
               const data = action.payload.val();
-              const $key = action.key as string;
-              return { $key, ...(data as object) };
+              const id = action.key as string;
+              return { id, ...(data as object) };
             }))
         );
   }
