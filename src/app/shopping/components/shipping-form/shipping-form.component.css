@@ -1,0 +1,14 @@
+.form-control {
+  outline-color: #c1d62e;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: bold;
+}
+button {
+  margin-top: 15px;
+}
